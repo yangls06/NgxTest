@@ -1,0 +1,19 @@
+1. 在NginxTest目录编译nginx
+./configure --prefix=./
+make
+
+2. mytest/testBasicType.c
+gcc -I ../objs/ -I ../src/core/ -I ../src/os/unix/ -o testBasicType testBasicType.c
+
+3. mytest/testNgxString.c
+gcc  -c -O -pipe  -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Wunused-function -Wunused-variable -Wunused-value -Werror -g -I ../objs/ -I ../src/os/unix/ testNgxString.c -I ../src/core/ -I ../src/event/ -I ../os/ -o testNgxString.o
+gcc -o testNgxString testNgxString.o ../objs/src/core/ngx_{string,palloc}.o ../objs/src/os/unix/ngx_alloc.o -lcrypt -lpcre -lcrypto -lz
+
+4. mytest/testNgxMem.c
+gcc -c -I ../objs/ -I ../src/os/unix/ -I ../src/core/ -I ../src/event/ -I ../os/ -o testNgxMem.o testNgxMem.c
+gcc -o testNgxMem testNgxMem.o ../objs/src/core/ngx_{string,palloc}.o ../objs/src/os/unix/ngx_alloc.o
+合并简化后的命令：
+gcc -c -I ../objs/ -I ../src/os/unix/ -I ../src/core/ -I ../src/event/ -I ../os/ -o testNgxMem.o testNgxMem.c;gcc -o testNgxMem testNgxMem.o ../objs/src/core/ngx_{string,palloc}.o ../objs/src/os/unix/ngx_alloc.o
+
+关于Nginx内存池最清楚的剖析见《Nginx源码分析-内存池》
+http://www.tbdata.org/archives/1390
